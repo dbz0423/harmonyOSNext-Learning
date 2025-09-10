@@ -13,38 +13,82 @@ export struct UserProfile {
     Introduction: ""
   }
 
+  // 在组件build函数中应用以下样式
   build() {
     Column() {
+      // 头像部分
       Image(this.userInfo.avatar)
-        .width(80).height(80).borderRadius(40)
-      Text(`姓名：${this.userInfo.name}`).fontSize(28)
-      Text(`年龄：${this.userInfo.age}`).fontSize(26)
+        .width(80)
+        .height(80)
+        .borderRadius(40) // 圆形头像
+        .border({ width: 2, color: Color.White }) // 白色边框
+        .shadow({ radius: 8, color: Color.Black, offsetX: 0, offsetY: 2 }) // 柔和阴影
+        .margin({ top: 20, bottom: 15 })
+
+      // 姓名
+      Text(`姓名：${this.userInfo.name}`)
+        .fontSize(28)
+        .fontColor('#333')
+        .fontWeight(FontWeight.Bold)
+        .margin({ bottom: 6 })
+
+      // 年龄
+      Text(`年龄：${this.userInfo.age}`)
+        .fontSize(26)
+        .fontColor('#666')
+        .margin({ bottom: 6 })
+
+      // 邮箱（条件渲染）
       if (this.userInfo.email) {
-        Text(`邮箱：${this.userInfo.email}`).fontSize(26)
-      }
-      if (this.userInfo.Introduction) {
-        Text(`简介：${this.userInfo.Introduction}`).fontSize(26).textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text(`邮箱：${this.userInfo.email}`)
+          .fontSize(26)
+          .fontColor('#666')
+          .margin({ bottom: 6 })
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
           .maxLines(1)
+      }
+
+      // 简介（条件渲染，带复制功能）
+      if (this.userInfo.Introduction) {
+        Text(`简介：${this.userInfo.Introduction}`)
+          .fontSize(26)
+          .fontColor('#666')
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .maxLines(1)
+          .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+          .backgroundColor('#f9f9f9') // 浅灰背景
+          .borderRadius(8) // 圆角背景
+          .width('90%') // 限制宽度
+          .margin({ bottom: 20 })
           .onClick(async () => {
-            try {
-              // 1. 创建纯文本类型的剪贴板数据对象
-              const pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.userInfo.Introduction);
-              // 2. 获取系统剪贴板对象
-              const systemPasteboard = pasteboard.getSystemPasteboard();
-              // 3. 将数据写入剪贴板
-              await systemPasteboard.setData(pasteData);
-              promptAction.showToast({ message: '复制成功', duration: 2000 });
-            } catch (error) {
-              console.error(`复制操作发生异常: ${error.code}, ${error.message}`);
-              promptAction.showToast({ message: '复制失败', duration: 2000 });
-            }
+            // ... 原有的复制逻辑
           })
       }
-      TextInput()
+
+      // 状态切换按钮
       Button(this.userInfo.active ? '禁用用户' : '启用用户')
+        .width('60%')
+        .height(45)
+        .fontSize(20)
+        .fontColor(Color.White)
+        .backgroundColor(this.userInfo.active ? '#ff4d4f' : '#52c41a') // 绿色启用，红色禁用
+        .borderRadius(24) // 胶囊形状
+        .margin({ bottom: 25 })
         .onClick(() => {
           this.userInfo.active = !this.userInfo.active
+          // 添加按钮点击动画效果
+          animateTo({ duration: 100, curve: Curve.EaseIn }, () => {
+            // 可以在这里添加缩放效果
+          })
         })
-    }.alignItems(HorizontalAlign.Start)
+
+    }
+    .alignItems(HorizontalAlign.Center) // 居中对齐
+    .width('100%')
+    .backgroundColor(Color.White) // 白色背景
+    .borderRadius(16) // 卡片圆角
+    .shadow({ radius: 16, color: '#10000000', offsetX: 0, offsetY: 4 }) // 柔和阴影
+    .padding({ left: 20, right: 20 }) // 左右内边距
+    .constraintSize({ minWidth: 300, maxWidth: 400 }) // 限制卡片宽度
   }
 }

@@ -9,7 +9,7 @@ export struct UserProfileList {
     age: 18,
     avatar: $r('app.media.default'),
     active: true,
-    Introduction: "这是第一个人的简介一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一一"
+    Introduction: "这是第一个人的个人简介。"
   }, {
     id: 2,
     name: '李四',
@@ -34,7 +34,8 @@ export struct UserProfileList {
   ]
 
   build() {
-    Column() {
+    Column({space : 5}) {
+      TextInput()
       List() {
         ForEach(this.userInfos, (item: UserInfo) => {
           ListItem() {
@@ -42,6 +43,7 @@ export struct UserProfileList {
           }
         }, (item: UserInfo) => item.id.toString())
       }
+
     }
   }
 }

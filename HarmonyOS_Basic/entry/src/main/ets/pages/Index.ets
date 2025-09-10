@@ -20,7 +20,7 @@ struct Index {
       // MyButton()
       // MyCard()
 
-      UserProfile()
+      // UserProfile()
       UserProfileList()
     }
     .width('100%')

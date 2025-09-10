@@ -1,5 +1,8 @@
 {
   "src": [
-    "pages/Index"
+    "pages/Index",
+    "pages/SettingsPage",
+    "pages/LauncherPage",
+    "pages/WatchPage"
   ]
 }
