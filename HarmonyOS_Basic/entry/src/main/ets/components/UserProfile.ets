@@ -22,7 +22,12 @@ export struct UserProfile {
         .height(80)
         .borderRadius(40) // 圆形头像
         .border({ width: 2, color: Color.White }) // 白色边框
-        .shadow({ radius: 8, color: Color.Black, offsetX: 0, offsetY: 2 }) // 柔和阴影
+        .shadow({
+          radius: 8,
+          color: Color.Black,
+          offsetX: 0,
+          offsetY: 2
+        }) // 柔和阴影
         .margin({ top: 20, bottom: 15 })
 
       // 姓名
@@ -55,13 +60,29 @@ export struct UserProfile {
           .fontColor('#666')
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .maxLines(1)
-          .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+          .padding({
+            left: 12,
+            right: 12,
+            top: 8,
+            bottom: 8
+          })
           .backgroundColor('#f9f9f9') // 浅灰背景
           .borderRadius(8) // 圆角背景
           .width('90%') // 限制宽度
           .margin({ bottom: 20 })
           .onClick(async () => {
-            // ... 原有的复制逻辑
+            try {
+              // 1. 创建纯文本类型的剪贴板数据对象
+              const pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.userInfo.Introduction);
+              // 2. 获取系统剪贴板对象
+              const systemPasteboard = pasteboard.getSystemPasteboard();
+              // 3. 将数据写入剪贴板
+              await systemPasteboard.setData(pasteData);
+              promptAction.showToast({ message: '复制成功', duration: 2000 });
+            } catch (error) {
+              console.error(`复制操作发生异常: ${error.code}, ${error.message}`);
+              promptAction.showToast({ message: '复制失败', duration: 2000 });
+            }
           })
       }
 
@@ -87,7 +108,12 @@ export struct UserProfile {
     .width('100%')
     .backgroundColor(Color.White) // 白色背景
     .borderRadius(16) // 卡片圆角
-    .shadow({ radius: 16, color: '#10000000', offsetX: 0, offsetY: 4 }) // 柔和阴影
+    .shadow({
+      radius: 16,
+      color: '#10000000',
+      offsetX: 0,
+      offsetY: 4
+    }) // 柔和阴影
     .padding({ left: 20, right: 20 }) // 左右内边距
     .constraintSize({ minWidth: 300, maxWidth: 400 }) // 限制卡片宽度
   }

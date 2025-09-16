@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/SettingsPage",
     "pages/LauncherPage",
-    "pages/WatchPage"
+    "pages/WatchPage",
+    "pages/BujvPage"
   ]
 }
